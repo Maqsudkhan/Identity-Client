@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   matSnackBar = inject(MatSnackBar);
   router = inject(Router);
   hide = true;
@@ -25,10 +25,16 @@ export class LoginComponent {
       error: (err) => {
         // this,localStorage
         console.log(err);
-      
+        
       }
     }
   )
-  }
+}
+ngOnInit(): void {
+  this.form = this.fb.group({
+    email : ['', [Validators.required, Validators.email]],
+    password : ['', Validators.required],
+  });
+}
   
 }
