@@ -35,10 +35,9 @@ export class RegisterComponent implements OnInit {
     const roles : string[] = roleString.split(' ').map((role: string)=>role.trim());
     this.form.value.roles = roles;
     
-    this.authService['register'](this.form.value).subscribe({
+    this.authService.register(this.form.value).subscribe({
       next: (response: any) => {
         console.log(response);
-        // Redirect or show success message
       },
       error: (err: any) => {
         console.log(err);
