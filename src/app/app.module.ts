@@ -23,6 +23,12 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
+import { UsersComponent } from './admin/users/users.component';
+import { UsersDetailsComponent } from './admin/users/users-details/users-details.component';
+import { StudentsComponent } from './admin/students/students.component';
+import { StudentDetailsComponent } from './admin/students/student-details/student-details.component';
+import { StudentProfileComponent } from './admin/students/student-profile/student-profile.component';
+import { UserProfileComponent } from './admin/users/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +36,13 @@ import { HttpClientModule } from '@angular/common/http';
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    UsersComponent,
+    UsersDetailsComponent,
+    StudentsComponent,
+    StudentDetailsComponent,
+    StudentProfileComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
