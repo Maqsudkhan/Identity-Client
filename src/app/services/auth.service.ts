@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+  [x: string]: any;
 
   // http1 = inject(HttpClient)
 
@@ -29,4 +30,28 @@ export class AuthService {
       })
     );
   }
+
+
+  register(data: Register): Observable<string>{
+    return this.http.post<string>(`${this.apiUrl}Users/Register`,data).pipe(
+      map((response)=>{
+        if(response == "nimadr"){
+          this.router.navigate(['/login'])
+        }
+        this.router.navigate(['/register'])
+        return response
+      })
+    );
+
 }
+
+logout()
+{
+  localStorage.setItem(this.tokenKey,'');
+}
+}
+
+
+
+
+

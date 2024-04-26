@@ -1,8 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { jwtDecode } from 'jwt-decode';
 
 @Component({
@@ -10,52 +11,69 @@ import { jwtDecode } from 'jwt-decode';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit{
+
   matSnackBar = inject(MatSnackBar);
   router = inject(Router);
   hide = true;
   form!: FormGroup;
   fb = inject(FormBuilder);
-  authService = inject(AuthService);
-  decodedToken:any;
-  tokenKey = 'token';
-  roles: string[] = [];
-  
-  login() {
-    this.authService.login(this.form.value).subscribe({
-      next: (response) =>{
-        console.log(response);
 
-        this.decodedToken = jwtDecode(localStorage.getItem(this.tokenKey)!)
-        console.log("Rollar kelishi kerak");
-        for(let index = 0; index < this.decodedToken.role.length; index++){
-          console.log(this.decodedToken.role[index]);
-          if(this.decodedToken.role[index] == 'Admin'){
-            this.router.navigate(['/users'])
+  authService = inject(AuthService);
+  decodedToken: any | null;
+
+  tokenKey = 'token' 
+
+  roles: string[] = [];
+
+  login(){
+    this.authService.login(this.form.value).subscribe(
+      {
+        next: (response) => {
+          console.log(response);
+
+          this.decodedToken = jwtDecode(localStorage.getItem(this.tokenKey)!)
+          console.log('rollar kelishi kere');
+          for (let index = 0; index < this.decodedToken.role.length; index++) {
+            console.log(this.decodedToken.role[index]);
+            if(this.decodedToken.role[index] == 'Admin'){
+              console.log('admin-test');
+              console.log(this.decodedToken.role[index]);
+              this.router.navigate(['/users'])
+            }
+            else if(this.decodedToken.role[index] == 'Student'){
+              console.log('student-test');
+              console.log(this.decodedToken.role[index]);
+              this.router.navigate(['/student-profile'])
+            }
           }
-          else if (this.decodedToken.role[index] == 'Student'){
-            this.router.navigate(['/student-profile'])
-          }
-          // else{
-          //   this.router.navigate(['/register'])
-          // }
           
+
+          this.matSnackBar.open(response.message, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'center'
+
+          })
+
+        },
+        error: (err) => {
+          
+          console.log(err);
+
+          this.matSnackBar.open(err.error.message, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'center'
+          })
         }
         
-      },
-      error: (err) => {
-        // this,localStorage
-        console.log(err);
-        
       }
-    }
-  )
-}
-ngOnInit(): void {
-  this.form = this.fb.group({
-    email : ['', [Validators.required, Validators.email]],
-    password : ['', Validators.required],
-  });
-}
+    )
+  }
   
+    ngOnInit(): void {
+      this.form = this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', Validators.required],
+      });
+    }
 }
