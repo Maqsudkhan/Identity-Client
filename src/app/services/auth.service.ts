@@ -32,7 +32,7 @@ export class AuthService {
   }
 
 
-  register(data: Register): Observable<string>{
+  register(data:RegisterRequest): Observable<string>{
     return this.http.post<string>(`${this.apiUrl}Users/Register`,data).pipe(
       map((response)=>{
         if(response == "nimadr"){
