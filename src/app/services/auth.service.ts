@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { LoginResponse } from '../interfaces/login-response';
 import { Router } from '@angular/router';
+import { RegisterRequest } from '../interfaces/register-request';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class AuthService {
   }
 
 
-  register(data:any): Observable<string>{
+  register(data:RegisterRequest): Observable<string>{
     return this.http.post<string>(`${this.apiUrl}Users/Register`,data).pipe(
       map((response)=>{
         if(response == "nimadr"){
