@@ -25,49 +25,49 @@ export class LoginComponent implements OnInit{
   tokenKey = 'token' 
 
 
-  login(){
-    this.authService.login(this.form.value).subscribe(
-      {
-        next: (response) => {
-          console.log(response);
+  // login(){
+  //   this.authService.login(this.form.value).subscribe(
+  //     {
+  //       next: (response) => {
+  //         console.log(response);
 
-          this.decodedToken = jwtDecode(localStorage.getItem(this.tokenKey)!)
-          console.log('rollar kelishi kere');
-          for (let index = 0; index < this.decodedToken.role.length; index++) {
-            console.log(this.decodedToken.role[index]);
-            if(this.decodedToken.role[index] == 'Admin'){
-              console.log('admin-test');
-              console.log(this.decodedToken.role[index]);
-              this.router.navigate(['/users'])
-            }
-            else if(this.decodedToken.role[index] == 'Student'){
-              console.log('student-test');
-              console.log(this.decodedToken.role[index]);
-              this.router.navigate(['/student-profile'])
-            }
-          }
+  //         this.decodedToken = jwtDecode(localStorage.getItem(this.tokenKey)!)
+  //         console.log('rollar kelishi kere');
+  //         for (let index = 0; index < this.decodedToken.role.length; index++) {
+  //           console.log(this.decodedToken.role[index]);
+  //           if(this.decodedToken.role[index] == 'Admin'){
+  //             console.log('admin-test');
+  //             console.log(this.decodedToken.role[index]);
+  //             this.router.navigate(['/users'])
+  //           }
+  //           else if(this.decodedToken.role[index] == 'Student'){
+  //             console.log('student-test');
+  //             console.log(this.decodedToken.role[index]);
+  //             this.router.navigate(['/student-profile'])
+  //           }
+  //         }
           
 
-          this.matSnackBar.open(response.message, 'Close', {
-            duration: 5000,
-            horizontalPosition: 'center'
+  //         this.matSnackBar.open(response.message, 'Close', {
+  //           duration: 5000,
+  //           horizontalPosition: 'center'
 
-          })
+  //         })
 
-        },
-        error: (err) => {
+  //       },
+  //       error: (err) => {
           
-          console.log(err);
+  //         console.log(err);
 
-          this.matSnackBar.open(err.error.message, 'Close', {
-            duration: 5000,
-            horizontalPosition: 'center'
-          })
-        }
+  //         this.matSnackBar.open(err.error.message, 'Close', {
+  //           duration: 5000,
+  //           horizontalPosition: 'center'
+  //         })
+  //       }
         
-      }
-    )
-  }
+  //     }
+  //   )
+  // }
   
     ngOnInit(): void {
       this.form = this.fb.group({
@@ -75,4 +75,65 @@ export class LoginComponent implements OnInit{
         password: [ '', Validators.required],
       });
     }
+
+
+    login() {
+      this.authService.login(this.form.value).subscribe({
+        next: (response) => {
+          console.log(response);
+    
+          try {
+            const token = localStorage.getItem(this.tokenKey);
+            if (!token) {
+              throw new Error('Token not found!');
+            }
+    
+            this.decodedToken = jwtDecode(token);
+    
+            if (!this.decodedToken || !this.decodedToken.role || this.decodedToken.role.length === 0) {
+              throw new Error('Invalid token or no roles found!');
+            }
+    
+            console.log('rollar kelishi kere');
+            for (let index = 0; index < this.decodedToken.role.length; index++) {
+              console.log(this.decodedToken.role[index]);
+              if (this.decodedToken.role[index] == 'Admin') {
+                console.log('admin-test');
+                console.log(this.decodedToken.role[index]);
+                this.router.navigate(['/users']);
+                return;
+              } else if (this.decodedToken.role[index] == 'Student') {
+                console.log('student-test');
+                console.log(this.decodedToken.role[index]);
+                this.router.navigate(['/student-profile']);
+                return;
+              }
+            }
+    
+            // Agar admin yoki talaba roli topilmasa
+          }catch (error: any) {
+              console.error('Invalid token or no roles found!');
+              // Kirish xatosi yuzaga kelsa, kirish sahifasiga qaytaring
+              this.router.navigate(['/login']);
+            }
+            
+    
+          this.matSnackBar.open(response.message, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'center'
+          });
+        },
+        error: (err) => {
+          console.log(err);
+    
+          this.matSnackBar.open(err.error.message, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'center'
+          });
+        }
+      });
+    }
+    
+
+
 }

@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  selector: 'app-logout',
+  templateUrl: './logout.component.html',
+  styleUrl: './logout.component.scss'
 })
-export class NavbarComponent {
+export class LogoutComponent {
+
   authService = inject(AuthService);
 
   logut(){

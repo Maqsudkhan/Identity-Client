@@ -4,10 +4,13 @@
     </button>
     <span>My App</span>
     <span class="example-spacer"></span>
+    <button routerLink="register" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon ><b>contact_mail</b></mat-icon>
+    </button>
     <button routerLink="login" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon ><b>login</b></mat-icon>
     </button>
-    <button routerLink="register" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <button (click)="logut()" routerLink="logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon ><b>logout</b></mat-icon>
     </button>
   </mat-toolbar>
