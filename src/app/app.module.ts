@@ -30,6 +30,7 @@ import { StudentDetailsComponent } from './admin/students/student-details/studen
 import { StudentProfileComponent } from './admin/students/student-profile/student-profile.component';
 import { UserProfileComponent } from './admin/users/user-profile/user-profile.component';
 import { LogoutComponent } from './pages/logout/logout.component';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { LogoutComponent } from './pages/logout/logout.component';
     MatInputModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    HttpClientModule
+    HttpClientModule,
+    TranslocoRootModule
   ],
   providers: [
     provideAnimationsAsync()
